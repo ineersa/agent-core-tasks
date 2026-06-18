@@ -1,0 +1,14 @@
+# Editor/IDE
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Lock file (ephemeral)
+.task-workflow.lock
