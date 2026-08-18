@@ -35,7 +35,7 @@ Non-goals for the spike:
 - If migration is recommended, follow-up implementation tasks are created/proposed with focused validation strategy (`castor test`, relevant virtual tests, `castor test:tui` only where needed).
 
 ## Workflow metadata
-Status: IN-PROGRESS
+Status: CANCELLED
 Branch: task/tui-native-symfony-widget-architecture-spike
 Worktree: /home/ineersa/projects/agent-core-worktrees/tui-native-symfony-widget-architecture-spike
 Fork run:
@@ -256,3 +256,9 @@ Completed:
 - Hatfield issue: https://github.com/ineersa/agent-core/issues/303
 - Upstream Symfony issue body is embedded under 'Draft body for an upstream Symfony TUI issue' and explicitly marked draft-only.
 - Confirmed no existing Symfony issue/PR specifically requests ScreenWriter injection before drafting.
+
+## Task workflow update - 2026-08-15T01:46:32.763Z
+- Moved IN-PROGRESS → CANCELLED.
+- Worktree path missing (/home/ineersa/projects/agent-core-worktrees/tui-native-symfony-widget-architecture-spike); skipping git worktree remove.
+- Removed IDEA exclusions for worktree /home/ineersa/projects/agent-core-worktrees/tui-native-symfony-widget-architecture-spike.
+- Summary: Cancelled at user request; the spike is complete and no further task workflow is needed.

@@ -24,14 +24,14 @@ This is an architecture/design spike only. Do not implement the replacement unti
 - State explicitly that OM remains session-global and non-branch-aware regardless of the selected history model.
 
 ## Workflow metadata
-Status: IN-PROGRESS
+Status: ARCHIVE
 Branch: task/spike-linear-history-rewind
 Worktree: /home/ineersa/projects/agent-core-worktrees/spike-linear-history-rewind
-Fork run: 2pwh21cl670l
+Fork run: bok3oqv0k943
 PR URL: https://github.com/ineersa/agent-core/pull/366
-PR Status: open
+PR Status: merged
 Started: 2026-08-06T01:25:06.640Z
-Completed:
+Completed: 2026-08-06T23:07:15.581Z
 
 ## Work log
 - Created: 2026-07-21T17:04:24.553Z
@@ -223,3 +223,255 @@ Completed:
 ## Task workflow update - 2026-08-06T20:44:56.937Z
 - Recorded fork run: 2pwh21cl670l
 - Architecture rewrite fork `2pwh21cl670l` launched from merged HEAD `d8426566e`. It must replace the role/title/assistant projector with retained turn numbers + sparse human prompts, fix explicit position 0, simplify runtime views/filter results/state copies/resume fallback, preserve issue #183/internal replay anchors/file-rewind API, run all focused/full Castor lanes, and commit without push/status move.
+
+## Task workflow update - 2026-08-06T21:02:28.098Z
+- Summary: Fork 2pwh21cl670l exhausted its context before validation/commit. It left an uncommitted 30-file rewrite (+567/-951 locally): sparse retained-turn/prompt model and most consumer migrations are present, but the worktree requires completion audit, compile/test fixes, remaining helper cleanup, and full Castor validation.
+- Fork `2pwh21cl670l` returned only `Partially complete / stopped by token` with no validation or commit. Worktree remains on merge HEAD d8426566e with 30 changed files, 2 deleted classes, and net -384 local LOC.
+- Parent inspection found the intended core model is mostly present, but at least one explicit requirement is incomplete: HistoryReplayFilter::filter() builds projection and then calls filterAtPosition(), which builds it again. HistoryProjector still has a one-line extractTextFromMessagePayload wrapper and duplicated initial-message loops. No QA evidence exists. A continuation fork must audit the entire dirty diff rather than assuming completion.
+
+## Task workflow update - 2026-08-06T21:02:59.454Z
+- Recorded fork run: bok3oqv0k943
+- Continuation fork `bok3oqv0k943` launched to audit/finish the 30-file dirty rewrite, remove the known double projection and one-line/duplicated extraction helpers, compile-migrate all callers, trim implementation-mirror tests, run focused + full Castor lanes, and commit cleanly without push/status transition.
+
+## Task workflow update - 2026-08-06T21:26:36.158Z
+- Validation: Fork read `.agents/skills/testing/SKILL.md` and `tests/AGENTS.md` and followed shared conventions.; Focused history/runtime/TUI filters: OK — 114 tests, 479 assertions; focused post-format recheck 31 tests, 128 assertions.; castor test: OK — 4,409 tests, 16,378 assertions.; castor deptrac: OK — 0 violations.; castor phpstan: OK — 0 errors.; castor cs-fix then castor cs-check: clean — 0 files.; castor test:controller-replay: OK — 12 tests, 165 assertions.; castor test:tui: OK — 34 tests, 216 assertions.; git diff --check clean; scoped stale conversational Tree/Leaf/Branch and deleted HistoryTurnDTO/HistoryReplayResultDTO searches returned zero.; Reviewer at c5277ee89: APPROVED; testing skill and tests/AGENTS.md read; no correctness, architecture, security, specification-fidelity, or minimality blockers.
+- Summary: Second architecture rewrite completed and independently re-reviewed at c5277ee89. The former 453-line role/title/assistant projector is now a sparse human-prompt projection over retained linear turn anchors; explicit position 0, issue #183 replay safety, fail-closed resume, user-only ExtensionApi rows, and editor selection semantics are intact. Reviewer APPROVED with no blockers.
+- Commit c5277ee8929dca2aa8890978c3b50466940e233f (`refactor(history): sparse prompts + explicit position 0`) completed the interrupted rewrite: 31 files +608/-1010 locally; deletes HistoryTurnDTO and HistoryReplayResultDTO; cumulative branch vs origin/main 133 files +3489/-6040 (net -2551).
+- Final internal model: HistoryDTO{list<int> retainedTurnNos,array<int,string> promptsByTurnNo,int positionTurnNo}; HistoryView{prompts,positionTurnNo}; HistoryPromptView{turnNo,promptText}. HistoryProjector build(array events) is one forward scan; replay filters return event lists and project once; selection targets sparse prompts while predecessor uses all retained anchors.
+- Final reviewer traced initial/follow_up/steer/generated append_message/tool/shell/position-0/internal predecessor/discard/new-tail/compaction/resume/failure paths, confirmed both issue #183 suppression cases and no discarded-tail leakage, and approved. Non-blocking observations only: dead defensive shell_command list member, pre-existing PromptHistory comment, accepted O(n) projection ceiling, accepted selection double event-store read.
+
+## Task workflow update - 2026-08-06T21:28:14.710Z
+- Validation: Post-review cleanup focused Castor tests: OK — 39 tests, 239 assertions.; Post-review cleanup castor phpstan: OK — 0 errors.; Post-review cleanup castor cs-check: clean.; Post-review cleanup git diff --check clean; testing skill and tests/AGENTS.md read.
+- Summary: Final Ponytail cleanup committed at ecb895145 after APPROVED review: removed the dead ApplyCommand `shell_command` allowlist entry (real shell traffic uses ApplyShellCommand) and updated a stale PromptHistory rewind comment. Worktree clean.
+- Commit ecb895145b5d8e2988993586f14a13cd437fbd50 removes one dead shell_command kind entry and updates one stale comment; 2 files, +3/-3, no behavior change for real shell traffic.
+
+## Task workflow update - 2026-08-06T21:30:47.736Z
+- Moved IN-PROGRESS → CODE-REVIEW.
+- Running deterministic castor check in worktree (timeout 480s)...
+- castor check passed (103.4s).
+- Pushed task/spike-linear-history-rewind to origin.
+- branch 'task/spike-linear-history-rewind' set up to track 'origin/task/spike-linear-history-rewind'.
+- PR already exists: https://github.com/ineersa/agent-core/pull/366
+- Validation: Reviewer APPROVED at c5277ee89; micro-cleanup ecb895145 was comment/dead-entry only and validated separately.; castor test OK: 4,409 tests, 16,378 assertions.; castor deptrac OK: 0 violations.; castor phpstan OK: 0 errors.; castor cs-check clean.; castor test:controller-replay OK: 12 tests, 165 assertions.; castor test:tui OK: 34 tests, 216 assertions.; castor test:llm-real warmup OK: 13 tests, 144 assertions; llama-proxy entries stable at 225 before/after.; Post-cleanup focused tests OK: 39 tests, 239 assertions; phpstan/cs-check clean.; git diff --check and stale conversational naming searches clean.
+- Summary: PR review iteration complete at ecb895145. Replaced renamed-over history projector with sparse human prompts over retained linear anchors, removed per-turn presentation/replay DTOs, fixed explicit position 0, preserved issue #183 suppression, made resume fail closed, removed dead shell allowlist entry, and resolved all PR comments. Final reviewer APPROVED.
+
+## Task workflow update - 2026-08-06T22:55:30.749Z
+- Validation: Manual session `.hatfield/sessions/1`: PASS WITH NOTES — 157 events, seq 1–157 contiguous/unique/ordered; sequence.cursor=157 and state.lastSeq=157.; History smoke: selection seq 18 positioned at turn 2 before prompt turn 7; discard seq 19 removed turns 7/13. Later selections seq 38/39 moved 33→21→27; discard seq 41 removed turn 33. Replacement turns used new monotonic IDs; final retained chain excludes all discarded turns.; Final state: completed, non-streaming, no error/retry, no pending tools/HITL/commands; discarded assistant/tool/user message structures absent; tool lifecycles paired and final agent_end completed.; Non-blocking smoke notes: one expected handled tool failure at seq 126–129; cancellation seq 139–142 produced an aborted LLM step and duplicate cancelled agent_end signaling before a later successful follow-up. No leak/stuck state observed. Aborted usage was empty-list shaped; likely intentional.; Worktree has untracked `secret.txt` created by the smoke. It was not touched; must be handled by user before DONE cleanup/merge if still present.
+- Summary: Manual smoke session 1 forensic audit passed. Canonical events are ordered/complete, both history selections and tail discards behaved correctly, turn identifiers remained monotonic, discarded turns are absent from final state, and the session ended completed with no pending work.
+
+## Task workflow update - 2026-08-06T23:04:48.008Z
+- Validation: Verified `secret.txt` absent and `git status --short` clean; no tracked changes or QA needed.
+- Summary: Removed the user-approved untracked smoke artifact `secret.txt`; task worktree is clean again.
+
+## Task workflow update - 2026-08-06T23:07:15.581Z
+- Moved CODE-REVIEW → DONE.
+- Merged task/spike-linear-history-rewind into integration checkout.
+- Auto-merging config/services.yaml
+Auto-merging docs/settings.md
+Auto-merging tests/CodingAgent/Runtime/InProcess/ParentPromptUserContextRegressionTest.php
+Merge made by the 'ort' strategy.
+ .../src/Tui/TuiExtensionContextInterface.php       |    5 +-
+ .hatfield/extensions/file-rewind/README.md         |    4 +-
+ config/services.yaml                               |   17 +-
+ docs/file-rewind.md                                |    9 +-
+ docs/session-storage.md                            |  184 ++-
+ docs/settings.md                                   |    2 +-
+ docs/tui-architecture.md                           |    6 +-
+ src/AgentCore/Application/AGENTS.md                |   22 +-
+ .../Handler/RunStateReplayException.php            |    4 +-
+ .../Application/Pipeline/AdvanceRunHandler.php     |   23 +-
+ .../Pipeline/ApplyShellCommandHandler.php          |   23 +-
+ .../Application/Pipeline/RunMessageProcessor.php   |   11 +
+ .../Application/Replay/RunStateReducer.php         |    4 +-
+ .../History/HistorySelectionServiceInterface.php   |   22 +
+ .../History/HistoryTailDiscardInterface.php        |   23 +
+ .../Contract/Replay/RunStateRebuilderInterface.php |    2 +-
+ .../Contract/Rewind/RunRewindServiceInterface.php  |   13 -
+ .../TurnTree/BranchReplayFilterInterface.php       |   26 -
+ .../Contract/TurnTree/BranchReplayResultDTO.php    |   31 -
+ .../Contract/TurnTree/TurnTreeNodeSnapshotDTO.php  |   19 -
+ .../TurnTree/TurnTreeProjectorInterface.php        |   21 -
+ .../Contract/TurnTree/TurnTreeSnapshotDTO.php      |   24 -
+ src/AgentCore/Domain/Event/RunEventTypeEnum.php    |    8 +-
+ .../Contract/ChildRunTranscriptSnapshotDTO.php     |    2 +-
+ .../Runtime/Contract/HistoryProviderInterface.php  |   18 +
+ .../SessionTranscriptProviderInterface.php         |    6 +-
+ .../Contract/SessionTranscriptSnapshotDTO.php      |    6 +-
+ .../Contract/TranscriptProjectorInterface.php      |    4 +-
+ .../Runtime/Contract/TurnTreeProviderInterface.php |   24 -
+ src/CodingAgent/Runtime/Contract/UserCommand.php   |    2 +-
+ ...urnHandler.php => SelectHistoryTurnHandler.php} |   52 +-
+ .../InProcess/InProcessAgentSessionClient.php      |   21 +-
+ .../Process/JsonlProcessAgentSessionClient.php     |    4 +-
+ .../Runtime/Projection/TranscriptChangeSet.php     |    2 +-
+ .../Projection/TranscriptProjectionState.php       |    4 +-
+ .../Runtime/Protocol/HistoryPromptView.php         |   17 +
+ src/CodingAgent/Runtime/Protocol/HistoryView.php   |   23 +
+ .../RunHistoryPositionChangedEventFactory.php      |   36 +
+ .../Protocol/RunLeafChangedEventFactory.php        |   24 -
+ .../Runtime/Protocol/RuntimeEventTranslator.php    |    6 +-
+ .../Runtime/Protocol/RuntimeEventTypeEnum.php      |    4 +-
+ .../Runtime/Protocol/TurnTreeNodeView.php          |   32 -
+ src/CodingAgent/Runtime/Protocol/TurnTreeView.php  |   30 -
+ .../Session/ChildRunTranscriptSnapshotProvider.php |    2 +-
+ src/CodingAgent/Session/History/HistoryDTO.php     |   69 +
+ .../Session/History/HistoryProjector.php           |  184 +++
+ .../Session/History/HistoryReplayFilter.php        |  257 ++++
+ .../Session/History/HistorySelectionService.php    |  130 ++
+ .../Session/History/HistoryTailDiscardService.php  |  109 ++
+ .../Replay/BranchReplayFilterContractAdapter.php   |   39 -
+ .../Replay/SessionHotPromptReplayService.php       |   16 +-
+ .../Replay/SessionRunStateReplayService.php        |  198 +--
+ .../Session/Replay/TurnBranchReplayDTO.php         |   29 -
+ .../Session/Replay/TurnTreeReplayFilter.php        |  212 ---
+ .../Session/Rewind/SessionRewindService.php        |  142 --
+ src/CodingAgent/Session/SessionHistoryProvider.php |   44 +
+ .../Session/SessionTranscriptProvider.php          |   15 +-
+ .../Session/SessionTurnTreeProvider.php            |   57 -
+ src/CodingAgent/Session/TurnTree/TurnTreeDTO.php   |   28 -
+ .../Session/TurnTree/TurnTreeNodeDTO.php           |   44 -
+ .../Session/TurnTree/TurnTreeProjector.php         |  698 ----------
+ .../TurnTree/TurnTreeProjectorContractAdapter.php  |   39 -
+ src/Tui/Application/InteractiveMode.php            |    6 +-
+ src/Tui/Application/SessionInitializer.php         |  131 +-
+ src/Tui/Application/TuiSessionSwitchService.php    |   12 +-
+ src/Tui/Listener/HistoryCommandHandler.php         |   29 +
+ src/Tui/Listener/HistoryCommandRegistrar.php       |   51 +
+ src/Tui/Listener/PromptHistory.php                 |    5 +-
+ src/Tui/Listener/TickPollListener.php              |    8 +-
+ src/Tui/Listener/TreeCommandHandler.php            |   38 -
+ src/Tui/Listener/TreeCommandRegistrar.php          |   59 -
+ src/Tui/Picker/HistoryPickerController.php         |  174 +++
+ src/Tui/Picker/TreePickerController.php            |  383 ------
+ src/Tui/Runtime/BridgeTuiExtensionContext.php      |   23 +-
+ .../Contract/TuiSessionSwitchServiceInterface.php  |   10 +-
+ src/Tui/Runtime/RuntimeEventPoller.php             |   64 +-
+ src/Tui/Runtime/TuiRuntimeContext.php              |    4 +-
+ src/Tui/Runtime/TuiRuntimeEventApplier.php         |   20 +-
+ src/Tui/Runtime/TuiSessionState.php                |    8 +-
+ src/Tui/Screen/ChatScreen.php                      |    2 +-
+ src/Tui/Transcript/TranscriptMountedWidget.php     |    2 +-
+ src/Tui/Transcript/TranscriptVisualPatch.php       |    2 +-
+ src/Tui/Transcript/TranscriptVisualProjector.php   |    4 +-
+ .../Handler/DeferredToolCompletionRuntimeTest.php  |    3 +
+ .../Application/Pipeline/AdvanceRunHandlerTest.php |   49 +-
+ .../Pipeline/ApplyShellCommandHandlerTest.php      |    9 +-
+ .../Pipeline/CommandMailboxPolicyTest.php          |    4 +-
+ .../RunCommitAfterTurnCommitPersistedSeqTest.php   |    3 +
+ .../Application/Pipeline/RunCommitLoggingTest.php  |    5 +
+ .../Support/PipelineCapturingAgentRunner.php       |    3 +
+ ...ControllerReplayAutoCompactionMultiTurnTest.php |    8 +-
+ ...ReplayAutoCompactionRepeatedReplicationTest.php |    8 +-
+ ...toryTurnEmitsRunHistoryPositionChangedTest.php} |   48 +-
+ .../ParentPromptUserContextRegressionTest.php      |    3 +
+ .../Protocol/RunLeafChangedEventFactoryTest.php    |   25 -
+ .../CodingAgent/Runtime/RuntimeEventMapperTest.php |   24 +-
+ tests/CodingAgent/Runtime/RuntimeEventTypeTest.php |    4 +-
+ .../Session/History/HistoryProjectorTest.php       |  196 +++
+ .../Session/History/HistoryReplayFilterTest.php    |  172 +++
+ .../History/HistorySelectionServiceTest.php        |  356 ++++++
+ .../History/HistoryTailDiscardServiceTest.php      |  151 +++
+ .../Replay/SessionHotPromptReplayServiceTest.php   |  182 ++-
+ .../Replay/SessionRunStateReplayServiceTest.php    |  221 ++--
+ .../Session/Replay/TurnTreeReplayFilterTest.php    |  207 ---
+ .../SessionRewindServiceDuplicateSequenceTest.php  |   89 --
+ .../Session/SessionTranscriptProviderTest.php      |   60 +-
+ .../Session/SessionTurnTreeProviderTest.php        |  175 ---
+ .../Session/TurnTree/TurnTreeProjectorTest.php     |  686 ----------
+ .../Application/SessionInitializerReplayTest.php   |   32 +-
+ tests/Tui/Application/SessionInitializerTest.php   |  287 ++---
+ tests/Tui/Application/SessionSwitchServiceTest.php |   20 +-
+ tests/Tui/E2E/TuiFileRewindE2eTest.php             |   20 +-
+ ...andE2eTest.php => TuiHistoryCommandE2eTest.php} |   76 +-
+ ...-07c.json => tui-history-select-turn1-07c.json} |    2 +-
+ ...-07c.json => tui-history-select-turn2-07c.json} |    2 +-
+ tests/Tui/Listener/CompletionListenerTest.php      |   10 +-
+ tests/Tui/Listener/ExportCommandRegistrarTest.php  |    2 +-
+ tests/Tui/Listener/HistoryCommandHandlerTest.php   |   83 ++
+ .../Tui/Listener/NewSessionCommandHandlerTest.php  |    4 +-
+ .../Listener/ResumeSessionCommandHandlerTest.php   |    4 +-
+ tests/Tui/Listener/TreeCommandHandlerTest.php      |  119 --
+ tests/Tui/Picker/HistoryPickerControllerTest.php   |  165 +++
+ tests/Tui/Picker/SessionPickerControllerTest.php   |    4 +-
+ tests/Tui/Picker/TreePickerControllerTest.php      | 1352 --------------------
+ tests/Tui/Runtime/RuntimeEventPollerTest.php       |  102 +-
+ tests/Tui/Runtime/TuiRuntimeEventApplierTest.php   |   65 +-
+ .../TuiFileRewindPickerExtensionVirtualTest.php    |   59 +-
+ .../Screen/TuiHistoryPickerOverlayVirtualTest.php  |   72 ++
+ .../Tui/Screen/TuiTreePickerOverlayVirtualTest.php |  102 --
+ tests/Tui/Support/ResumeCanonicalEventsFixture.php |   12 +-
+ .../ResumeSessionInitializerTestFactory.php        |   35 +-
+ tests/Tui/Support/SubagentLiveScenarioHarness.php  |   22 +-
+ .../Tui/Support/SubagentProgressEventsFixture.php  |   12 +-
+ .../Tui/Support/TuiRuntimeContextBuilderTrait.php  |   12 +-
+ 134 files changed, 3491 insertions(+), 6042 deletions(-)
+ create mode 100644 src/AgentCore/Contract/History/HistorySelectionServiceInterface.php
+ create mode 100644 src/AgentCore/Contract/History/HistoryTailDiscardInterface.php
+ delete mode 100644 src/AgentCore/Contract/Rewind/RunRewindServiceInterface.php
+ delete mode 100644 src/AgentCore/Contract/TurnTree/BranchReplayFilterInterface.php
+ delete mode 100644 src/AgentCore/Contract/TurnTree/BranchReplayResultDTO.php
+ delete mode 100644 src/AgentCore/Contract/TurnTree/TurnTreeNodeSnapshotDTO.php
+ delete mode 100644 src/AgentCore/Contract/TurnTree/TurnTreeProjectorInterface.php
+ delete mode 100644 src/AgentCore/Contract/TurnTree/TurnTreeSnapshotDTO.php
+ create mode 100644 src/CodingAgent/Runtime/Contract/HistoryProviderInterface.php
+ delete mode 100644 src/CodingAgent/Runtime/Contract/TurnTreeProviderInterface.php
+ rename src/CodingAgent/Runtime/Controller/CommandHandler/{RewindToTurnHandler.php => SelectHistoryTurnHandler.php} (57%)
+ create mode 100644 src/CodingAgent/Runtime/Protocol/HistoryPromptView.php
+ create mode 100644 src/CodingAgent/Runtime/Protocol/HistoryView.php
+ create mode 100644 src/CodingAgent/Runtime/Protocol/RunHistoryPositionChangedEventFactory.php
+ delete mode 100644 src/CodingAgent/Runtime/Protocol/RunLeafChangedEventFactory.php
+ delete mode 100644 src/CodingAgent/Runtime/Protocol/TurnTreeNodeView.php
+ delete mode 100644 src/CodingAgent/Runtime/Protocol/TurnTreeView.php
+ create mode 100644 src/CodingAgent/Session/History/HistoryDTO.php
+ create mode 100644 src/CodingAgent/Session/History/HistoryProjector.php
+ create mode 100644 src/CodingAgent/Session/History/HistoryReplayFilter.php
+ create mode 100644 src/CodingAgent/Session/History/HistorySelectionService.php
+ create mode 100644 src/CodingAgent/Session/History/HistoryTailDiscardService.php
+ delete mode 100644 src/CodingAgent/Session/Replay/BranchReplayFilterContractAdapter.php
+ delete mode 100644 src/CodingAgent/Session/Replay/TurnBranchReplayDTO.php
+ delete mode 100644 src/CodingAgent/Session/Replay/TurnTreeReplayFilter.php
+ delete mode 100644 src/CodingAgent/Session/Rewind/SessionRewindService.php
+ create mode 100644 src/CodingAgent/Session/SessionHistoryProvider.php
+ delete mode 100644 src/CodingAgent/Session/SessionTurnTreeProvider.php
+ delete mode 100644 src/CodingAgent/Session/TurnTree/TurnTreeDTO.php
+ delete mode 100644 src/CodingAgent/Session/TurnTree/TurnTreeNodeDTO.php
+ delete mode 100644 src/CodingAgent/Session/TurnTree/TurnTreeProjector.php
+ delete mode 100644 src/CodingAgent/Session/TurnTree/TurnTreeProjectorContractAdapter.php
+ create mode 100644 src/Tui/Listener/HistoryCommandHandler.php
+ create mode 100644 src/Tui/Listener/HistoryCommandRegistrar.php
+ delete mode 100644 src/Tui/Listener/TreeCommandHandler.php
+ delete mode 100644 src/Tui/Listener/TreeCommandRegistrar.php
+ create mode 100644 src/Tui/Picker/HistoryPickerController.php
+ delete mode 100644 src/Tui/Picker/TreePickerController.php
+ rename tests/CodingAgent/Runtime/InProcess/{InProcessRewindEmitsRunLeafChangedTest.php => InProcessSelectHistoryTurnEmitsRunHistoryPositionChangedTest.php} (75%)
+ delete mode 100644 tests/CodingAgent/Runtime/Protocol/RunLeafChangedEventFactoryTest.php
+ create mode 100644 tests/CodingAgent/Session/History/HistoryProjectorTest.php
+ create mode 100644 tests/CodingAgent/Session/History/HistoryReplayFilterTest.php
+ create mode 100644 tests/CodingAgent/Session/History/HistorySelectionServiceTest.php
+ create mode 100644 tests/CodingAgent/Session/History/HistoryTailDiscardServiceTest.php
+ delete mode 100644 tests/CodingAgent/Session/Replay/TurnTreeReplayFilterTest.php
+ delete mode 100644 tests/CodingAgent/Session/Rewind/SessionRewindServiceDuplicateSequenceTest.php
+ delete mode 100644 tests/CodingAgent/Session/SessionTurnTreeProviderTest.php
+ delete mode 100644 tests/CodingAgent/Session/TurnTree/TurnTreeProjectorTest.php
+ rename tests/Tui/E2E/{TuiTreeCommandE2eTest.php => TuiHistoryCommandE2eTest.php} (77%)
+ rename tests/Tui/E2E/fixtures/{tui-tree-rewind-turn1-07c.json => tui-history-select-turn1-07c.json} (91%)
+ rename tests/Tui/E2E/fixtures/{tui-tree-rewind-turn2-07c.json => tui-history-select-turn2-07c.json} (91%)
+ create mode 100644 tests/Tui/Listener/HistoryCommandHandlerTest.php
+ delete mode 100644 tests/Tui/Listener/TreeCommandHandlerTest.php
+ create mode 100644 tests/Tui/Picker/HistoryPickerControllerTest.php
+ delete mode 100644 tests/Tui/Picker/TreePickerControllerTest.php
+ create mode 100644 tests/Tui/Screen/TuiHistoryPickerOverlayVirtualTest.php
+ delete mode 100644 tests/Tui/Screen/TuiTreePickerOverlayVirtualTest.php
+- Removed worktree /home/ineersa/projects/agent-core-worktrees/spike-linear-history-rewind.
+- Removed IDEA exclusions for worktree /home/ineersa/projects/agent-core-worktrees/spike-linear-history-rewind.
+- Pulled integration checkout: Merge made by the 'ort' strategy..
+- Validation: PR review iteration reviewer APPROVED.; Deterministic castor check passed in 103.4s before final push.; Manual session 1 smoke audit passed: correct selection/discard behavior, monotonic replacement turns, discarded content absent, clean completed state.; Integration checkout and task worktree clean before DONE transition.
+- Summary: User merged PR #366. Final result replaces conversational tree/leaf/branch machinery with sparse linear history, removes roughly 2.5K net LOC, and substantially simplifies projection, replay, selection, and TUI history logic.
+
+## Task workflow update - 2026-08-06T23:11:47.244Z
+- Validation: DONE merge succeeded; integration HEAD includes PR #366, worktree removed, IDEA exclusions cleaned, pull completed.; Post-merge castor check qa-20260806-230718-541021-363537cf: deptrac OK, test OK (4,392 tests/16,436 assertions), test:tui OK (34/216), phpstan OK, cs-check OK, cache guard stable 225→225, no QA-run leaks.; Post-merge controller-replay and llm-real controller smoke failed before run.started with command.rejected. Reproduced standalone with `castor test:controller-replay`. Root cause from isolated controller log: SkillDiscovery tries to mirror bundled `src/CodingAgent/Resources/skills/subagents/FRONTMATTER.md` over `~/.hatfield/skills/subagents/FRONTMATTER.md`, but destination is mode 0444/epoch timestamp and fopen fails Permission denied. This predates/is unrelated to linear-history code; task CODE-REVIEW gate passed before the global read-only artifact existed.; Integration checkout git status clean after diagnostics.
+- Summary: Task merged and worktree removed. Post-merge `LLM_MODE=true castor check` found an unrelated deterministic global-skill materialization permission failure after PHAR smoke: source controller tests cannot overwrite read-only files under `~/.hatfield/skills/subagents/`. History/unit/TUI/static-analysis lanes remain green.
+
+## Task workflow update - 2026-08-14T19:53:43+00:00
+- Moved DONE → ARCHIVE.
+- Archived task without git, worktree, PR, or branch side effects.
