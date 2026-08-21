@@ -42,7 +42,7 @@ The session runtime executes from `var/tmp/phar/hatfield.phar` in the active wor
 - Testing skill documents the session-env contract and the PHAR rule; `castor check` fully green on the implementing branch.
 
 ## Workflow metadata
-Status: DONE
+Status: ARCHIVE
 Branch: task/make-castor-qa-safe-to-run-from-hatfield-sessions
 Worktree: /home/ineersa/projects/agent-core-worktrees/make-castor-qa-safe-to-run-from-hatfield-sessions
 Fork run: gvgayn6hfm76
@@ -220,3 +220,7 @@ Completed: 2026-08-18T17:23:35.625Z
 - Removed IDEA exclusions for worktree /home/ineersa/projects/agent-core-worktrees/make-castor-qa-safe-to-run-from-hatfield-sessions.
 - Deleted branch task/make-castor-qa-safe-to-run-from-hatfield-sessions.
 - Pulled integration checkout: Merge made by the 'ort' strategy..
+
+## Task workflow update - 2026-08-19T18:17:09.737Z
+- Moved DONE → ARCHIVE.
+- Archived task without git, worktree, PR, or branch side effects.

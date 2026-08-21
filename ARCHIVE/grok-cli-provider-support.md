@@ -152,14 +152,14 @@ Mirror the Codex OAuth + provider-builder flow 1:1 (Codex is the template):
 - Unit tests cover login/refresh (mocked HTTP), header injection, internal-key stripping, and dialect normalization; `castor test`, `castor deptrac`, `castor phpstan`, `castor cs-check` pass. One live manual smoke with real creds is run and recorded; no usage/multi-account/imagine features exist in the diff.
 
 ## Workflow metadata
-Status: IN-PROGRESS
+Status: ARCHIVE
 Branch: task/grok-cli-provider-support
 Worktree: /home/ineersa/projects/agent-core-worktrees/grok-cli-provider-support
 Fork run:
 PR URL: https://github.com/ineersa/agent-core/pull/409
-PR Status: open
+PR Status: merged
 Started: 2026-08-18T17:47:40.831Z
-Completed:
+Completed: 2026-08-18T20:19:47.068Z
 
 ## Work log
 - Created: 2026-08-18T17:34:42.040Z
@@ -209,3 +209,77 @@ Completed:
 
 ## Task workflow update - 2026-08-18T18:58:50.028Z
 - Moved CODE-REVIEW → IN-PROGRESS.
+
+## Task workflow update - 2026-08-18T19:29:19.362Z
+- Moved IN-PROGRESS → CODE-REVIEW.
+- Running deterministic castor check in worktree (timeout 480s)...
+- castor check passed (138.9s).
+- Pushed task/grok-cli-provider-support to origin.
+- branch 'task/grok-cli-provider-support' set up to track 'origin/task/grok-cli-provider-support'.
+- PR already exists: https://github.com/ineersa/agent-core/pull/409
+- Summary: Redirect URI host fixed localhost→127.0.0.1 (commit 63a419c9b): GrokOAuthConfig::redirectUriForPort() + 3 test assertions; focused Grok auth 28/28, phpstan 0, cs-check clean. Codex untouched.
+
+## Task workflow update - 2026-08-18T19:35:47.808Z
+- Moved CODE-REVIEW → IN-PROGRESS.
+- Summary: Live smoke round 2 blocker: TypeError AsyncResponse::stream() expects Traversable|array, CurlResponse given. Root cause: GrokModelClient uses bare HttpClient (Codex pattern) but vendor RawSseStream parser streams via EventSourceHttpClient->stream($response), which only accepts AsyncResponse (Codex pairs bare client with full-body CodexSseStream instead — fork mixed half of each pattern). Lazy unit tests never consumed the lazy generator, so it only fired live. Fix: wrap client in EventSourceHttpClient in GrokModelClient constructor + regression test that consumes the stream.
+
+## Task workflow update - 2026-08-18T19:44:04.608Z
+- Moved IN-PROGRESS → CODE-REVIEW.
+- Running deterministic castor check in worktree (timeout 480s)...
+- castor check passed (139.7s).
+- Pushed task/grok-cli-provider-support to origin.
+- branch 'task/grok-cli-provider-support' set up to track 'origin/task/grok-cli-provider-support'.
+- PR already exists: https://github.com/ineersa/agent-core/pull/409
+- Summary: Stream TypeError fixed (commit 344befa4f): EventSourceHttpClient wrap in GrokModelClient ctor (restores vendor RawSseStream pairing), SSE content-type on 200 mocks, new stream-consumption regression test. GrokModelClient 10/10 (40 asserts), phpstan 0, cs clean, phar rebuilt.
+
+## Task workflow update - 2026-08-18T20:19:47.069Z
+- Moved CODE-REVIEW → DONE.
+- JetBrains project close degraded for /home/ineersa/projects/agent-core-worktrees/grok-cli-provider-support: ide_close_project returned isError.
+- Merged task/grok-cli-provider-support into integration checkout.
+- Merge made by the 'ort' strategy.
+ .hatfield/settings.yaml                            |  82 +++++-
+ bin/console                                        |   1 +
+ config/hatfield.defaults.yaml                      |  84 ++++++
+ config/services.yaml                               |   4 +
+ docs/settings-models.md                            |   7 +-
+ src/CodingAgent/Auth/CodexOAuthProvider.php        |  21 +-
+ src/CodingAgent/Auth/GrokAuthRecord.php            |  71 ++++++
+ src/CodingAgent/Auth/GrokAuthStorage.php           | 169 +++++++++++++
+ src/CodingAgent/Auth/GrokOAuthConfig.php           |  81 ++++++
+ src/CodingAgent/Auth/GrokOAuthService.php          | 159 ++++++++++++
+ src/CodingAgent/Auth/GrokTokenRefresher.php        |  73 ++++++
+ src/CodingAgent/Auth/LocalCallbackServer.php       |   9 +-
+ src/CodingAgent/CLI/Auth/GrokAuthCommand.php       | 105 ++++++++
+ .../Grok/GrokSymfonyAiProviderBuilder.php          |  94 +++++++
+ src/Platform/Bridge/Grok/GrokModelClient.php       | 239 ++++++++++++++++++
+ tests/CodingAgent/Auth/GrokAuthRecordTest.php      |  72 ++++++
+ tests/CodingAgent/Auth/GrokAuthStorageTest.php     | 215 ++++++++++++++++
+ tests/CodingAgent/Auth/GrokOAuthConfigTest.php     |  40 +++
+ tests/CodingAgent/Auth/GrokOAuthServiceTest.php    | 172 +++++++++++++
+ tests/CodingAgent/Auth/GrokTokenRefresherTest.php  |  96 +++++++
+ .../Grok/GrokSymfonyAiProviderBuilderTest.php      | 175 +++++++++++++
+ tests/Platform/Bridge/Grok/GrokModelClientTest.php | 281 +++++++++++++++++++++
+ 22 files changed, 2237 insertions(+), 13 deletions(-)
+ create mode 100644 src/CodingAgent/Auth/GrokAuthRecord.php
+ create mode 100644 src/CodingAgent/Auth/GrokAuthStorage.php
+ create mode 100644 src/CodingAgent/Auth/GrokOAuthConfig.php
+ create mode 100644 src/CodingAgent/Auth/GrokOAuthService.php
+ create mode 100644 src/CodingAgent/Auth/GrokTokenRefresher.php
+ create mode 100644 src/CodingAgent/CLI/Auth/GrokAuthCommand.php
+ create mode 100644 src/CodingAgent/Infrastructure/SymfonyAi/Grok/GrokSymfonyAiProviderBuilder.php
+ create mode 100644 src/Platform/Bridge/Grok/GrokModelClient.php
+ create mode 100644 tests/CodingAgent/Auth/GrokAuthRecordTest.php
+ create mode 100644 tests/CodingAgent/Auth/GrokAuthStorageTest.php
+ create mode 100644 tests/CodingAgent/Auth/GrokOAuthConfigTest.php
+ create mode 100644 tests/CodingAgent/Auth/GrokOAuthServiceTest.php
+ create mode 100644 tests/CodingAgent/Auth/GrokTokenRefresherTest.php
+ create mode 100644 tests/CodingAgent/Infrastructure/SymfonyAi/Grok/GrokSymfonyAiProviderBuilderTest.php
+ create mode 100644 tests/Platform/Bridge/Grok/GrokModelClientTest.php
+- Removed worktree /home/ineersa/projects/agent-core-worktrees/grok-cli-provider-support.
+- Removed IDEA exclusions for worktree /home/ineersa/projects/agent-core-worktrees/grok-cli-provider-support.
+- Pulled integration checkout: Merge made by the 'ort' strategy..
+- Summary: Merged by user via GitHub PR #409 (branch task/grok-cli-provider-support, final head 829144018). Delivered: xAI Grok CLI OAuth login (auth:grok, PKCE, 127.0.0.1 callback), Grok provider bridge (cli-chat-proxy.grok.com/v1/responses, spoofed grok-pager headers, EventSourceHttpClient+RawSseStream streaming), 8-model catalog template in defaults + grok-cli provider enabled in project settings, fork model switched to grok-cli/grok-composer-2.5-fast (thinking_level: null, model reasons server-side without effort control). Live smoke passed: OAuth login + streaming chat turn. Follow-up task on board: shared-auth-json-credential-file-store (auth.json cross-lock race).
+
+## Task workflow update - 2026-08-19T18:17:02.664Z
+- Moved DONE → ARCHIVE.
+- Archived task without git, worktree, PR, or branch side effects.

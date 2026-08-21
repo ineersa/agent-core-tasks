@@ -29,7 +29,7 @@ Dependencies: useful after SETTINGS-03/05 but architecturally independent. SETTI
 - Because this touches TUI/runtime/process lifecycle, focused Castor validation and the full `castor check` gate are required before review; leaked controller/consumer processes are treated as lifecycle bugs.
 
 ## Workflow metadata
-Status: DONE
+Status: ARCHIVE
 Branch: task/settings-06-reload-current-session
 Worktree: /home/ineersa/projects/agent-core-worktrees/settings-06-reload-current-session
 Fork run:
@@ -147,3 +147,7 @@ Completed: 2026-08-18T18:12:00.452Z
 
 ## Task workflow update - 2026-08-18T18:12:04.372Z
 - Summary: PR #408 merged to main. Merged into integration checkout (ort, 30 files +1612/−78), worktree removed, task complete. Live-verified by user: multiple sequential reloads via castor run:agent incl. agent-model-change scenario; clear-on-reload added post-review (c89bf4f84). Known untested corners accepted: PHAR-mode reload loop, InProcess transport explicit teardown (documented no-op).
+
+## Task workflow update - 2026-08-19T18:17:25.197Z
+- Moved DONE → ARCHIVE.
+- Archived task without git, worktree, PR, or branch side effects.

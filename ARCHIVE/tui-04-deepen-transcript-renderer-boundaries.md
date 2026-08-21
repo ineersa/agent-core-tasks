@@ -40,7 +40,7 @@ Reference: PR https://github.com/ineersa/agent-core/pull/399 and task `tui-03-de
 - Focused virtual transcript tests, `castor test`, `castor test:controller-replay`, `castor test:tui`, `castor deptrac`, `castor phpstan`, `castor cs-check`, and final `castor check` pass.
 
 ## Workflow metadata
-Status: DONE
+Status: ARCHIVE
 Branch: task/tui-04-deepen-transcript-renderer-boundaries
 Worktree: /home/ineersa/projects/agent-core-worktrees/tui-04-deepen-transcript-renderer-boundaries
 Fork run: 1qaii92gg3af
@@ -100,3 +100,7 @@ Completed: 2026-08-18T14:12:33.194Z
 - Removed worktree /home/ineersa/projects/agent-core-worktrees/tui-04-deepen-transcript-renderer-boundaries.
 - Removed IDEA exclusions for worktree /home/ineersa/projects/agent-core-worktrees/tui-04-deepen-transcript-renderer-boundaries.
 - Pulled integration checkout: Merge made by the 'ort' strategy..
+
+## Task workflow update - 2026-08-19T18:17:32.835Z
+- Moved DONE → ARCHIVE.
+- Archived task without git, worktree, PR, or branch side effects.

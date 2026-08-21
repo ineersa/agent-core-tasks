@@ -25,7 +25,7 @@ Run a session with the RunPod provider and any assistant turn that produces both
 - castor check passes if TUI/runtime/LLM-visible flow is touched
 
 ## Workflow metadata
-Status: DONE
+Status: ARCHIVE
 Branch: task/fix-runpod-assistant-text-before-thinking-ordering
 Worktree: /home/ineersa/projects/agent-core-worktrees/fix-runpod-assistant-text-before-thinking-ordering
 Fork run: f62t4uhb62tz
@@ -81,3 +81,7 @@ Completed: 2026-08-18T01:44:16.003Z
 ## Task workflow update - 2026-08-18T01:44:53.026Z
 - Updated PR Status: merged
 - Validation: PR #405 approved and merged by user; task branch merged into integration checkout, worktree cleaned up
+
+## Task workflow update - 2026-08-19T18:16:55.706Z
+- Moved DONE → ARCHIVE.
+- Archived task without git, worktree, PR, or branch side effects.

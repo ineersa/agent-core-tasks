@@ -30,7 +30,7 @@ Sibling TuiRichTranscriptProductValidationE2eTest is unaffected (asserts short t
 - castor test:tui --filter=TuiToolExchangeCardE2eTest green in integration checkout; full castor test:tui green
 
 ## Workflow metadata
-Status: TODO
+Status: CANCELLED
 Branch:
 Worktree:
 Fork run:
@@ -41,3 +41,14 @@ Completed:
 
 ## Work log
 - Created: 2026-08-18T14:17:43.011Z
+
+## Task workflow update - 2026-08-18T21:20:51.191Z
+- 2026-08-18: Related class observed + fixed on task/providers-catalog branch (separate commit): TuiSkillReadCardVirtualRenderTest failed on long worktree paths (path wraps 'SKILL.md' mid-token; fails at base commit, passes on integration 34-char root). Fix pattern there: normalize whitespace before substring assertion. Same normalization approach likely applies to this task's stats-string wrap.
+
+## Task workflow update - 2026-08-19T00:15:07.701Z
+- Moved TODO → CANCELLED.
+- No Worktree metadata; cancelled without git worktree cleanup.
+
+## Task workflow update - 2026-08-19T00:15:16.445Z
+- Summary: Duplicate of 2026-08-18-fix-path-length-wrap-flake-in-tuitoolexchangecarde2etest-assertion — same test, same assertion, same root cause (path-length wrap), same fix. Resolved by PR #416 (commit cd0e76584, merged; integration repro green; castor check 8/8).
+- 2026-08-18: cancelled as duplicate — resolved by PR #416 / task 2026-08-18-fix-path-length-wrap-flake (DONE)

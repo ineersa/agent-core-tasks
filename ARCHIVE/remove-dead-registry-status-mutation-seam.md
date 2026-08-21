@@ -17,7 +17,7 @@ Scope guards: no new abstraction/callback/sync layer; no behavior or layout chan
 - All focused castor test + test:tui lanes green; no production behavior/layout change; public ExtensionApi untouched
 
 ## Workflow metadata
-Status: DONE
+Status: ARCHIVE
 Branch: task/remove-dead-registry-status-mutation-seam
 Worktree: /home/ineersa/projects/agent-core-worktrees/remove-dead-registry-status-mutation-seam
 Fork run: zkxdutbfw7fb
@@ -101,3 +101,7 @@ Completed: 2026-08-18T03:49:12.561Z
 - Removed worktree /home/ineersa/projects/agent-core-worktrees/remove-dead-registry-status-mutation-seam.
 - Removed IDEA exclusions for worktree /home/ineersa/projects/agent-core-worktrees/remove-dead-registry-status-mutation-seam.
 - Pulled integration checkout: Merge made by the 'ort' strategy..
+
+## Task workflow update - 2026-08-19T18:17:18.381Z
+- Moved DONE → ARCHIVE.
+- Archived task without git, worktree, PR, or branch side effects.
