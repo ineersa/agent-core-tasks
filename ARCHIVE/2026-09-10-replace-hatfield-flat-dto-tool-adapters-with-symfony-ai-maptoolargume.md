@@ -10,14 +10,14 @@ Related issue https://github.com/ineersa/agent-core/issues/396. Link local Symfo
 - Prepare issue description with real Hatfield use cases and limitations of existing alternatives.
 
 ## Workflow metadata
-Status: CODE-REVIEW
+Status: DONE
 Branch: task/2026-09-10-replace-hatfield-flat-dto-tool-adapters-with-symfony-ai-maptoolargume
 Worktree: /home/ineersa/projects/agent-core-worktrees/2026-09-10-replace-hatfield-flat-dto-tool-adapters-with-symfony-ai-maptoolargume
 Fork run:
 PR URL: https://github.com/ineersa/agent-core/pull/523
-PR Status: open
+PR Status: merged
 Started: 2026-09-10T22:03:36+00:00
-Completed:
+Completed: 2026-09-25T02:07:04+00:00
 
 ## Work log
 - Created: 2026-09-10T21:56:10+00:00
@@ -228,3 +228,110 @@ Completed:
 ## Task workflow update - 2026-09-22T02:19:44+00:00
 - Validation: CODE-REVIEW transition castor check passed in 61.5 seconds.; Reviewer APPROVE at d217f6f6d.; Branch pushed and PR #523 updated.
 - Summary: Pushed second-feedback revision d217f6f6d and replied to all three new PR comments. Removed the local MapToolArguments constraint, explained the nullable-required workaround with concrete optional fields, and routed the broader MCPToolbox/MCP SDK migration to the existing dependency task.
+
+## Task workflow update - 2026-09-24T13:29:39+00:00
+- Moved CODE-REVIEW → IN-PROGRESS.
+- Summary: Upstream symfony/ai#2563 merged. Pin a reproducible Platform revision containing the promoted-property requiredness fix, remove Hatfield's nullable-required workaround, and validate without folding the general Composer/MCP upgrade into PR #523.
+
+## Task workflow update - 2026-09-24T13:29:53+00:00
+- Ownership: owner=main; fork_run=none; revision=d217f6f6d; scope=Pin fixed Symfony AI Platform dependency and delete nullable-required schema workaround, with focused schema and packaging validation; outcome=assigned; commit=none
+
+## Task workflow update - 2026-09-24T13:40:59+00:00
+- Validation: castor test --filter=RegistryBackedToolboxTest on experimental Platform main: fails; view_image.path missing from required.; castor test --filter=testContainerSchemaRequiresArgumentsWithNoDefaultsButNotOptionalModes on experimental Platform main: fails; agent_resume artifact_id/task/agent_run_id/tasks all incorrectly required; bash.command omitted from required.; composer update symfony/ai-platform --with-all-dependencies --minimal-changes --dry-run resolved Platform main f2e9139 with alias, plus polyfill-intl-grapheme update; composer install restored original lock.
+- Summary: Blocked safe removal of nullable-required workaround after probing Symfony AI Platform main f2e9139. Composer can resolve dev-main via root inline alias (dev-main as 0.13.1), but generated schemas regress: view_image.path and bash.command become optional because Hatfield DTOs give required fields defaults, while agent_resume's non-promoted nullable properties all become required despite optional constructor parameters. Platform main also adds TokenUsageInterface::getModel, requiring three test fakes to change. No code or dependency update retained; worktree and vendor restored to locked v0.13.0.
+- Ownership: owner=main; fork_run=none; revision=d217f6f6d; scope=Pin fixed Symfony AI Platform dependency and delete nullable-required schema workaround, with focused schema and packaging validation; outcome=blocked; commit=none
+
+## Task workflow update - 2026-09-24T13:42:07+00:00
+- Ownership: owner=main; fork_run=none; revision=d217f6f6d; scope=Expand PR #523 per user choice: align DTO requiredness with constructor defaults, preserve agent_resume normalization while making optional fields promoted, pin fixed Platform main, remove workaround, validate; outcome=assigned; commit=none
+
+## Task workflow update - 2026-09-24T14:23:30+00:00
+- Validation: Temporary upstream PR #2593 overlay: castor test passed 5001 tests/21955 assertions; castor phpstan --path=src/CodingAgent passed; castor cs-check passed; castor lsp:check --path=src/CodingAgent passed with zero diagnostics; git diff --check clean.; Without overlay, focused castor test fails on optional-only subagent schema missing additionalProperties:false and agent_resume optional keys marked required. This is the reproducibility blocker, not a product-code regression.; Upstream Symfony AI Platform PR #2593: 1052 tests/2219 assertions pass (1 skipped), targeted phpstan clean, cs-fixer clean. Full local upstream PHPStan hit pre-existing TypeInfoDescriber recursion; GitHub PHPStan Components & Bundles check green.; Ignored vendor overlays restored by composer reinstall symfony/ai-platform. Worktree contains only tracked uncommitted changes, and task stays IN-PROGRESS.
+- Summary: Expanded PR #523 work is implemented in the cleanly isolated task worktree but not committed or pushed. Upstream Symfony AI PR #2593 is open: it handles non-promoted constructor defaults and preserves additionalProperties:false for optional-only objects. Composer lock currently references Platform main f2e9139, which does not yet include PR #2593. Temporarily overlaid its two files in ignored vendor to validate, then removed overlays with composer reinstall. Do not submit Hatfield changes or call CODE-REVIEW gate until upstream PR merges and composer.lock is refreshed to its released split-package commit.
+- Ownership: owner=main; fork_run=none; revision=d217f6f6d; scope=Expand PR #523 per user choice: align DTO requiredness with constructor defaults, preserve agent_resume normalization while making optional fields promoted, pin fixed Platform main, remove workaround, validate; outcome=blocked; commit=none
+- Review: role=reviewer; artifact=agent_d6407d8ab8943d8f; revision=uncommitted diff vs d217f6f6d; scope=Hatfield schema migration and upstream #2593 dependency behavior; decision=REQUEST CHANGES pending upstream merge/lock; stale RegistryBackedToolbox docblock fixed after review
+
+## Task workflow update - 2026-09-24T14:24:36+00:00
+- Correction to the preceding ownership scope: AgentResumeArgumentsDTO and AgentResumeTaskDTO remain non-promoted and keep their constructor normalization. Upstream symfony/ai#2593 handles their optional constructor parameters; Hatfield did not promote or rewrite these DTOs.
+
+## Task workflow update - 2026-09-25T00:00:44+00:00
+- Ownership: owner=main; fork_run=none; revision=d217f6f6d+uncommitted-schema-follow-up; scope=Refresh locked Symfony AI Platform after merged #2593, validate without vendor overlays, review and update existing PR #523 only; outcome=assigned; commit=none
+
+## Task workflow update - 2026-09-25T00:08:15+00:00
+- Validation: Focused Castor tests: 113 tests/407 assertions before merge; after merge extension semantic and schema tests: 81 tests/570 assertions.; After merge: castor test 5041 tests/22449 assertions passed; castor phpstan --path=src/CodingAgent passed; castor cs-check passed; composer validate passed (existing extension-api @dev warning); PHAR build/smokes from castor test passed.; Upstream Platform installed from composer.lock at 37380dbeed8175873934df424e04c67b8400d3c6, containing constructor-aware requiredness and optional-only additionalProperties:false.
+- Summary: Merged Symfony AI #2593 is now in reproducible Platform split-package lock at 37380db, with no vendor overlays. Removed Hatfield nullable-required normalizer and restored true requiredness in DTO constructors. Merged origin/main to clear #523 conflict. New upstream main had added ai-store/sqlite-store/vektor-store v0.12 dev dependencies; updated only those three root dev constraints to ^0.13 to resolve their incompatibility with Platform dev-main. Existing extension package constraints remain unchanged; targeted and full Castor tests pass. No new PR created; existing #523 still awaits reviewer and CODE-REVIEW transition.
+- Ownership: owner=main; fork_run=none; revision=c2d0b7f12; scope=Refresh locked Symfony AI Platform after merged #2593, validate without vendor overlays, merge origin/main, resolve root dev store version compatibility for existing #523; outcome=completed; commit=001855448,c2d0b7f12
+
+## Task workflow update - 2026-09-25T00:18:32+00:00
+- Review: role=reviewer; artifact=agent_d6407d8ab8943d8f; revision=c2d0b7f12; scope=specification fidelity, Platform split lock, merge resolution, store version compatibility and test proof; decision=APPROVE with identified production --no-dev extension version skew to address before handoff
+- Ownership: owner=main; fork_run=none; revision=c2d0b7f12; scope=Align observational-memory standalone Composer AI requirements with host Platform/Store 0.13 versions, validate extension install and production autoload path; outcome=assigned; commit=none
+
+## Task workflow update - 2026-09-25T00:22:53+00:00
+- Validation: castor test 5041 tests/22449 assertions after merge; focused extension and mapped schema tests 26/402 after extension Composer update; castor test:llm-real --filter=LlamaCppSmokeTest 1/8; castor phpstan --path=src/CodingAgent and castor cs-check passed; composer validate passed with pre-existing @dev warning.; Root composer.lock pins Platform 37380db with merged upstream #2593, extension vendor resolves ai-* at v0.13.0 and registers autoloader without prepend. All tracked worktree changes committed and clean.
+- Summary: Reviewer APPROVE on final revision 907daa13a after extension manifest alignment. No unresolved code findings; ready for existing PR #523 CODE-REVIEW transition with full gate. No new PR is authorized.
+- Ownership: owner=main; fork_run=none; revision=907daa13a; scope=Align observational-memory standalone Composer AI requirements with host Platform/Store 0.13 versions, validate extension install and autoload; outcome=completed; commit=907daa13a
+- Review: role=reviewer; artifact=agent_d6407d8ab8943d8f; revision=907daa13a; scope=final specification-fidelity, schema requiredness, clean dependency lock, extension manifest alignment, merge resolution and validation; decision=APPROVE
+
+## Task workflow update - 2026-09-25T00:24:16+00:00
+- Attempted IN-PROGRESS → CODE-REVIEW.
+- Failed step: castor check (exit code 1).
+- Task remains IN-PROGRESS: IN-PROGRESS/2026-09-10-replace-hatfield-flat-dto-tool-adapters-with-symfony-ai-maptoolargume.md.
+- Session/run: 32.
+- QA reports: /home/ineersa/projects/agent-core-worktrees/2026-09-10-replace-hatfield-flat-dto-tool-adapters-with-symfony-ai-maptoolargume/var/reports/qa-20260925-002302-24193-91c214a1.
+- Next: fix the failures, re-validate with focused Castor commands, then retry move_task(to="CODE-REVIEW").
+
+## Task workflow update - 2026-09-25T00:24:56+00:00
+- Validation: First transition QA report var/reports/qa-20260925-002302-24193-91c214a1: unit 5041/22449, controller-replay 13/218, TUI 6/40, llm-real 5/30; deptrac, PHPStan, dead-code, CS, LSP and docs lanes clean.; llama-proxy cache stats after gate: entries=406 vs 405 baseline. castor clean:cleanup:workers:list: no stale candidates. No push or PR side effects completed.
+- Summary: CODE-REVIEW transition did not push: all Castor check lanes passed, but llama-proxy cache guard detected one new entry (baseline 405, current 406). The prior focused smoke warmed only one LLM case; warm full llm-real group before re-entering gate. Worker diagnostics found no stale QA workers.
+
+## Task workflow update - 2026-09-25T00:26:14+00:00
+- Attempted IN-PROGRESS → CODE-REVIEW.
+- Completed: castor check passed (52.2s).
+- QA reports: /home/ineersa/projects/agent-core-worktrees/2026-09-10-replace-hatfield-flat-dto-tool-adapters-with-symfony-ai-maptoolargume/var/reports/qa-20260925-002522-29137-99540a46.
+- Session/run: 32.
+- Task remains IN-PROGRESS pending push/PR.
+
+## Task workflow update - 2026-09-25T00:26:16+00:00
+- Attempted IN-PROGRESS → CODE-REVIEW.
+- Completed: castor check passed; pushed task/2026-09-10-replace-hatfield-flat-dto-tool-adapters-with-symfony-ai-maptoolargume to origin.
+- QA reports: /home/ineersa/projects/agent-core-worktrees/2026-09-10-replace-hatfield-flat-dto-tool-adapters-with-symfony-ai-maptoolargume/var/reports/qa-20260925-002522-29137-99540a46.
+- Session/run: 32.
+- Task remains IN-PROGRESS pending PR creation.
+
+## Task workflow update - 2026-09-25T00:26:16+00:00
+- castor check passed (52.2s).
+- Pushed task/2026-09-10-replace-hatfield-flat-dto-tool-adapters-with-symfony-ai-maptoolargume to origin.
+- Skipped PR creation (pushOnly: true).
+- Session/run: 32.
+- Task remains IN-PROGRESS pending final metadata move.
+
+## Task workflow update - 2026-09-25T00:26:16+00:00
+- Moved IN-PROGRESS → CODE-REVIEW.
+- castor check passed (52.2s).
+- Pushed task/2026-09-10-replace-hatfield-flat-dto-tool-adapters-with-symfony-ai-maptoolargume to origin.
+- Skipped PR creation (pushOnly: true).
+- Validation: Before transition: castor test 5041/22449; castor test:llm-real full group 5/30; focused extension/schema tests 26/402; PHPStan and CS check passed. Full check owned by transition.
+- Summary: Existing PR #523 only. Symfony AI #2593 merged; Hatfield Platform lock includes it, custom nullable-required workaround removed, DTO requiredness corrected, extension AI version constraints aligned. Warmed full llm-real group after earlier cache-guard failure. Push branch; do not create a PR.
+
+## Task workflow update - 2026-09-25T00:27:07+00:00
+- Updated PR URL: https://github.com/ineersa/agent-core/pull/523
+- Updated PR Status: open
+- Validation: CODE-REVIEW transition castor check passed in 52.2s. QA report var/reports/qa-20260925-002522-29137-99540a46.; Prior failed gate was llama-proxy cache growth 405→406 with all lanes passing; warmed complete castor test:llm-real 5/30 before successful gate. No orphan QA workers found.; Final reviewer APPROVE on revision 907daa13a: artifact agent_d6407d8ab8943d8f; no blocking findings.
+- Summary: Final revision 907daa13a pushed to existing PR #523 only. Symfony AI #2593 merged and locked; nullable-required workaround removed. Merged latest origin/main, aligned root and memory extension AI 0.13 dependencies, updated the existing PR description. PR is mergeable; no new PR created.
+
+## Task workflow update - 2026-09-25T02:03:23+00:00
+- Summary: PR #523 is MERGED on GitHub at fc99e180d. DONE transition stopped at local integration merge: main has 9 unpushed commits that independently moved Symfony AI Store 0.12 dependencies into production require; task branch requires Platform 0.13 and Store 0.13 as dev dependencies. Conflicts in composer.json and composer.lock only. Task remains CODE-REVIEW pending explicit conflict resolution preserving production Store dependencies at 0.13; no force merge.
+- Ownership: owner=main; fork_run=none; revision=ec8400ada+907daa13a; scope=Resolve local main integration conflict for already merged PR #523 preserving local production Store dependencies and task Platform 0.13; outcome=assigned; commit=none
+
+## Task workflow update - 2026-09-25T02:07:04+00:00
+- Moved CODE-REVIEW → DONE.
+- Merged task/2026-09-10-replace-hatfield-flat-dto-tool-adapters-with-symfony-ai-maptoolargume into integration checkout.
+- Already up to date.
+- Removed worktree /home/ineersa/projects/agent-core-worktrees/2026-09-10-replace-hatfield-flat-dto-tool-adapters-with-symfony-ai-maptoolargume.
+- Removed IDEA exclusions for worktree /home/ineersa/projects/agent-core-worktrees/2026-09-10-replace-hatfield-flat-dto-tool-adapters-with-symfony-ai-maptoolargume.
+- Pulled integration checkout: Merge made by the 'ort' strategy..
+- Validation: Local conflict resolution: composer validate passed (existing @dev warning), castor test --filter='(RegistryBackedToolboxTest|ToolCallArgumentResolverContainerTest|SemanticIndexServiceTest|MemoryStoreAdapterTest)' passed 78 tests/572 assertions; Composer lock places store packages in production packages.
+- Summary: GitHub PR #523 merged at fc99e180d. Local integration main's earlier unpushed OM dependencies required composer.json and composer.lock reconciliation; resolved without force, retained production Store dependencies at ^0.13 and locked Platform commit. Focused integration tests 78/572 passed. Now complete task transition and pull remote main.
+
+## Task workflow update - 2026-09-25T02:08:37+00:00
+- Validation: Post-merge castor check PASS in /home/ineersa/projects/agent-core: qa-20260925-020715-35573-e018914f (188.6s). Unit 5042/22492, controller replay 13/218, TUI 6/40, llm-real 5/30; deptrac, PHPStan, LSP, dead-code, CS, docs, catalog all passed; QA leak and llama-proxy cache guards passed.; git status clean on integration main; task worktree absent. PR #523 MERGED at fc99e180d.
+- Summary: Post-merge integration at e151ea27a is complete. Local main kept its unpushed observational-memory commits, resolved composer conflicts without force, and pulled GitHub merge fc99e180d. Task worktree removed; main checkout clean (11 commits ahead of origin/main, not pushed).
