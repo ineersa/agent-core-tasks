@@ -100,3 +100,28 @@ Completed:
 
 ## Task workflow update - 2026-09-28T14:50:01+00:00
 - Summary: User authorized squash and push. Squashed reviewed SDK P1/P2 fixes into single commit f0835c4 and pushed task/add-proper-mcp-tool-call-cancellation to origin git@github.com:ineersa/php-sdk.git using explicit force-with-lease against fa67a3f84f3893fc9c915091c9f877f7aea6cf4c. Branch remains one commit above 16836d4. Tracked SDK working tree clean; unrelated untracked .idea/ and AGENTS.md preserved. No PR opened. Hatfield worktree unchanged.
+
+## Task workflow update - 2026-09-28T15:22:48+00:00
+- Ownership: owner=main; fork_run=none; revision=php-sdk:f0835c4; scope=central post-suspension interruption check and buffered-response ordering regression; outcome=assigned; commit=none
+
+## Task workflow update - 2026-09-28T15:26:24+00:00
+- Validation: SDK make unit-tests passed 1596 tests / 4171 assertions; make integration-tests passed 71 / 163; make phpstan and make cs passed; diff check clean.; Refreshed Hatfield local SDK mirror; castor test --filter=Mcp passed 189 / 727.; Reviewer agent_d4e5347c662cdd61 APPROVE for Protocol.php and ProtocolTest.php diff versus f0835c4; focused 18 tests / 68 assertions passed.
+- Summary: Fixed user's remaining STDIO response-first ordering P2 centrally: Protocol::exchange rechecks interruption after Fiber::suspend returns, and common catch discards buffered response. Added suspended cancellation/deadline rows asserting notification, cleanup and subsequent request. SDK changes uncommitted and not pushed.
+- Ownership: owner=main; fork_run=none; revision=php-sdk:f0835c4+working-tree; scope=post-suspension interruption ordering fix and regression; outcome=completed; commit=none
+
+## Task workflow update - 2026-09-28T15:31:00+00:00
+- Summary: User authorized squash and push of STDIO ordering fix. SDK now single commit 3e3e2d8 above 16836d4, pushed to ineersa/php-sdk branch task/add-proper-mcp-tool-call-cancellation with exact force-with-lease against f0835c4969ec99e1b296430482f264889ff5ab6a. Tracked SDK working tree clean; unrelated untracked files preserved. No PR opened; Hatfield worktree unchanged.
+
+## Task workflow update - 2026-09-28T16:11:38+00:00
+- Validation: After user updated bubblewrap permissions, make inspector-tests completed successfully (exit status 0 confirmed in supervisor status file): 103 tests, 288 assertions, 7 skipped, 122.420 seconds. npm EROFS blocker no longer reproduces. This does not constitute make ci/conformance/docs-guides validation.
+
+## Task workflow update - 2026-09-28T19:55:12+00:00
+- Validation: make ci passed exit 0 on 3e3e2d8: 1775 tests, 4646 assertions, 7 skipped; PHPStan and formatting passed. make ci updated ignored local Composer dependencies firebase/php-jwt and phpdocumentor/type-resolver.; make docs-guides passed strict Zensical build.; 7 Inspector skips are explicit in HttpClientCommunicationTest::setUp: logging/setLevel and built-in PHP server sampling limitations.; make conformance-tests executed: client baseline check passed (12/54 checks; remaining expected). Server reported unexpected failures despite Makefile exit success (runner uses || true); server returned HTTP500.; Diagnosed server failure via fixture container running server.php as www-data: Session directory /app/tests/Conformance/sessions is not writable. Host sessions and logs dirs owned UID/GID65534, mode0755. CI workflow explicitly chmods these dirs to777; same host chmod failed Operation not permitted. Fixture containers/network cleaned up. Conformance not green; generated untracked score JSON files retained as evidence.
+- Summary: Full CI and strict docs validation pass. Server conformance blocked by fixture directory permissions, not yet PR-ready on all required validation.
+
+## Task workflow update - 2026-09-28T20:03:32+00:00
+- Validation: After user fixed fixture directory permissions, make conformance-server passed: 80/80 checks, zero failures, baseline check passed. Docker fixture containers and network removed by Makefile. Combined with earlier client conformance baseline pass, make ci pass, and strict docs-guides pass, requested validation commands are now complete. Seven Inspector skips are existing explicit logging/sampling limitations.
+- Summary: Server conformance permission blocker resolved. No code changes, commits, pushes or PR creation in this validation pass.
+
+## Task workflow update - 2026-09-28T20:19:57+00:00
+- Summary: Created upstream SDK PR https://github.com/modelcontextprotocol/php-sdk/pull/518 from ineersa:task/add-proper-mcp-tool-call-cancellation at 3e3e2d8 into main, closing issue #517. PR documents cooperative HTTP limitations, version-aware notifications, full CI/docs/conformance results and that new coverage is unit/STDIO integration rather than new Inspector scenarios. Hatfield integration task stays IN-PROGRESS with local dependency wiring; no Hatfield PR/status transition.
