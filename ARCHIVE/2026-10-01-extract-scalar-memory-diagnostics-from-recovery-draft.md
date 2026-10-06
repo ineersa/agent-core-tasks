@@ -11,14 +11,14 @@ Implementation specification v1.0 Change1, /home/ineersa/projects/agent-core-tas
 - Castor focused/static/architecture checks pass; document measured versus unproven memory properties.
 
 ## Workflow metadata
-Status: CODE-REVIEW
+Status: DONE
 Branch: task/2026-10-01-extract-scalar-memory-diagnostics-from-recovery-draft
 Worktree: /home/ineersa/projects/agent-core-worktrees/2026-10-01-extract-scalar-memory-diagnostics-from-recovery-draft
-Fork run: agent_a1f1ce95828fbd9a
+Fork run: agent_0157899d0529714e
 PR URL: https://github.com/ineersa/agent-core/pull/544
-PR Status: open
+PR Status: merged
 Started: 2026-10-01T21:43:54+00:00
-Completed:
+Completed: 2026-10-02T01:52:55+00:00
 
 ## Work log
 - Created: 2026-10-01T21:43:40+00:00
@@ -82,3 +82,57 @@ Completed:
 - castor check passed (102.4s).
 - Pushed task/2026-10-01-extract-scalar-memory-diagnostics-from-recovery-draft to origin.
 - Created PR: https://github.com/ineersa/agent-core/pull/544
+
+## Task workflow update - 2026-10-02T00:20:23+00:00
+- Moved CODE-REVIEW → IN-PROGRESS.
+- Summary: Address user review before merge: widget-owned parser lifetime (#542), failed handle-stat diagnostics (#543), applied batch boundary detection and best-effort checkpoint failures (#544). No merge authorized or performed.
+
+## Task workflow update - 2026-10-02T00:20:54+00:00
+- Ownership: owner=fork; fork_run=agent_a1f1ce95828fbd9a; revision=774b0fe89; scope=applied-batch boundaries and isolated checkpoint failures; outcome=assigned; commit=none
+
+## Task workflow update - 2026-10-02T01:10:06+00:00
+- Recorded fork run: agent_0157899d0529714e
+- Summary: User review fixes completed: per-event applied batch observations, best-effort isolated logging;54tests237assertions/controller14tests253assertions. Independent reviewer agent_f31ff5f2df7b696b APPROVED current committed tree d60d4a039; no blocking findings. Full transition gate pending.
+- Ownership: owner=fork; fork_run=agent_0157899d0529714e; revision=d60d4a039; scope=user PR review corrections; outcome=completed; commit=d60d4a039
+
+## Task workflow update - 2026-10-02T01:17:12+00:00
+- Attempted IN-PROGRESS → CODE-REVIEW.
+- Completed: castor check passed (63.6s).
+- QA reports: /home/ineersa/projects/agent-core-worktrees/2026-10-01-extract-scalar-memory-diagnostics-from-recovery-draft/var/reports/qa-20261002-011608-49681-82e355f1.
+- Session/run: 75.
+- Task remains IN-PROGRESS pending push/PR.
+
+## Task workflow update - 2026-10-02T01:17:14+00:00
+- Attempted IN-PROGRESS → CODE-REVIEW.
+- Completed: castor check passed; pushed task/2026-10-01-extract-scalar-memory-diagnostics-from-recovery-draft to origin.
+- QA reports: /home/ineersa/projects/agent-core-worktrees/2026-10-01-extract-scalar-memory-diagnostics-from-recovery-draft/var/reports/qa-20261002-011608-49681-82e355f1.
+- Session/run: 75.
+- Task remains IN-PROGRESS pending PR creation.
+
+## Task workflow update - 2026-10-02T01:17:15+00:00
+- castor check passed (63.6s).
+- Pushed task/2026-10-01-extract-scalar-memory-diagnostics-from-recovery-draft to origin.
+- PR already exists: <url>
+- Session/run: 75.
+- Task remains IN-PROGRESS pending final metadata move.
+
+## Task workflow update - 2026-10-02T01:17:15+00:00
+- Moved IN-PROGRESS → CODE-REVIEW.
+- castor check passed (63.6s).
+- Pushed task/2026-10-01-extract-scalar-memory-diagnostics-from-recovery-draft to origin.
+- PR already exists: https://github.com/ineersa/agent-core/pull/544
+- Summary: Addressed batched lifecycle observation and best-effort logging review findings atd60d4a039. Independent reviewer agent_f31ff5f2df7b696b APPROVE; focused54/237, controller14/253, canonical static/dead-code/style clean.
+
+## Task workflow update - 2026-10-02T01:52:55+00:00
+- Moved CODE-REVIEW → DONE.
+- Merged task/2026-10-01-extract-scalar-memory-diagnostics-from-recovery-draft into integration checkout.
+- Already up to date.
+- Removed worktree /home/ineersa/projects/agent-core-worktrees/2026-10-01-extract-scalar-memory-diagnostics-from-recovery-draft.
+- Removed IDEA exclusions for worktree /home/ineersa/projects/agent-core-worktrees/2026-10-01-extract-scalar-memory-diagnostics-from-recovery-draft.
+- Pulled integration checkout: Already up to date..
+- Summary: Verified user merged PR on GitHub. Clean task worktree; combined integration post-merge gate follows.
+
+## Task workflow update - 2026-10-02T01:56:57+00:00
+- Updated PR Status: merged
+- Validation: castor check PASS: var/reports/qa-20261002-015453-65964-786ea6b2; 4912 unit/integration tests22388assertions; TUI6/46; live5/30; controller replay/static/dead-code/style/docs/lsp pass; git status --short: empty
+- Summary: Post-merge integrated castor check PASS at b58640142. Initial gate failed only stale PHPStan DCD result cache referencing missing hash; preserved cache in var/tmp/phpstan-dead-code-stale-20261002-015304 and rebuilt via Castor. Final all lanes green, leak check clean. Integration working tree clean; task worktree removed.

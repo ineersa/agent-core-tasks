@@ -502,3 +502,6 @@ Completed:
 
 ## Task workflow update - 2026-10-01T22:47:39+00:00
 - Summary: Both existing Change1 forks resumed and corrected blockers. Parent focused checks pass: reader48/200 and diagnostics61/260. Independent streaming text-duplication proof replaces invalid cumulative peak comparison; baseline PID precedence restored. Markdown, streaming, diagnostics remain independent unmerged slices pending task-to-pr review/full gates. Owner-local execution, immutable inputs, canonical writer and reconstruction/index stages not implemented by these extractions. PR541 unchanged.
+
+## Task workflow update - 2026-10-02T01:56:57+00:00
+- Summary: Independent prerequisite PRs542,543,544 merged by user, tasks DONE and worktrees cleaned. Integrated mainb58640142 full Castor gate passed after rebuilding stale DCD cache. Widget-owned parser lifetime, truthful reverse short-read metrics, per-event boundary observation and best-effort diagnostics included. Next specification work remains owner-local state/immutable inputs/canonical writer/recovery/index/byte budgets. RejectedPR541 unchanged; do not reuse shared full-state cache architecture.
