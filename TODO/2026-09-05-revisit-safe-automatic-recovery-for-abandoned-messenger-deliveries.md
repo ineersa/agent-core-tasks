@@ -36,3 +36,9 @@ Completed:
 - Summary: Revived investigation alongside IN-PROGRESS broker integration at user request. sqlite-queue now supports signal-safe native Messenger keepalive, but package documentation still requires application policy for renewal failure and duplicate external effects.
 - Implement coupled transport/supervision work in the broker integration task's single worktree. Do not create a parallel writer/worktree for the same changes. This task remains open until explicit recovery policy and deterministic failure proof are satisfied.
 - The user's request reopens evaluation of keepalive and adequate redelivery timeouts; it does not establish exactly-once execution or silently settle the prior requirement for approval of automatic reclaim. Inspect and obtain approval for remaining policy choices before enabling short leases.
+
+## Task workflow update - 2026-10-15T22:14:43+00:00
+- Summary: Broker integration branch now configures approved 60-second reservations and native --keepalive=5; source-focused and controller replay proof pass. Recovery acceptance is not closed.
+- Related implementation: broker integration commits c4e01af11 and 1193f4cb0. Do not create a parallel integration worktree; coupled changes remain in broker task.
+- Concrete redelivery causes documented: dead/suspended/starved consumer, failed or unavailable renewal/connection, broker restart invalidating live receipts, or clock jumps reaching persisted expiry. Successful renewal retains ownership; expiry permits another consumer. Receipt fencing protects queue settlement, not external effects.
+- Installed Symfony Worker::keepalive catches renewal exceptions and logs a warning, leaving handler execution running. Broker death is fail-visible at controller supervision, but renewal-failure fail-stop and long-handler native heartbeat failure proof remain open. No production stability claim or task completion.

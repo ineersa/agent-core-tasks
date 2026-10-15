@@ -65,7 +65,7 @@ Main owns contract decisions and the coupled minimal broker/storage/adapter work
 Status: IN-PROGRESS
 Branch: task/2026-09-27-implement-session-owned-sqlite-messenger-broker
 Worktree: /home/ineersa/projects/agent-core-worktrees/2026-09-27-implement-session-owned-sqlite-messenger-broker
-Fork run: agent_5214862b6fbc9487
+Fork run: agent_62f58e21da12adf3
 PR URL:
 PR Status:
 Started: 2026-10-15T20:42:26+00:00
@@ -140,3 +140,52 @@ Completed:
 - Ownership: owner=fork; fork_run=agent_5214862b6fbc9487; revision=885bfec6d plus uncommitted integration; scope=initial external broker wiring; outcome=blocked; commit=none
 - agent_resume refused the existing child because its context exceeded the resume threshold (187934 input tokens). Transfer sole-writer ownership to a fresh fork rather than duplicating an active child.
 - Ownership: owner=fork; fork_run=none; revision=885bfec6d plus uncommitted integration; scope=finish core broker lifecycle/path safety and focused runnable transport/controller proof in existing task worktree; outcome=assigned; commit=none
+
+## Task workflow update - 2026-10-15T21:38:36+00:00
+- Ownership: owner=fork; fork_run=agent_bf3fc59f00d08cc8; revision=885bfec6d plus uncommitted integration; scope=core lifecycle/path corrections and focused proof; outcome=completed; commit=none
+- Fork reports Castor-focused core suite passes (16 tests/124 assertions) and event-buffer suite (19/78); scoped PHPStan passes. Replay proof used raw vendor/bin/phpunit outside a Castor failure isolation and is not accepted as project validation. Repeat through Castor. Main found remaining owned-process-group/endpoint ownership safety issues and timing-based lease test proof to resolve before accepting integration.
+- Ownership: owner=fork; fork_run=agent_bf3fc59f00d08cc8; revision=885bfec6d plus existing dirty integration; scope=resolve core owned-tree teardown and endpoint cleanup safety, deterministic renewal proof, reconcile remaining queue harnesses and Castor static/replay validation; outcome=assigned; commit=none
+
+## Task workflow update - 2026-10-15T21:46:29+00:00
+- Ownership: owner=fork; fork_run=946cc934-6f04-5d12-a8ca-ccbe10296b39; revision=885bfec6d plus dirty integration; scope=owned-process-group and endpoint safety corrections; outcome=completed; commit=none
+- Linux process-group probe confirmed proc_open create_process_group did not isolate the broker; setsid via Symfony Process does. Teardown/path fixes now need rerun validation. Remaining harness reconciliation and ownership-loss fail-stop are not completed.
+- Ownership: owner=fork; fork_run=946cc934-6f04-5d12-a8ca-ccbe10296b39; revision=885bfec6d plus dirty integration; scope=only DSN expectations, obsolete test harness cleanup and focused Castor test/format proof in existing task worktree; outcome=assigned; commit=none
+
+## Task workflow update - 2026-10-15T21:47:29+00:00
+- Ownership: owner=fork; fork_run=946cc934-6f04-5d12-a8ca-ccbe10296b39; revision=885bfec6d plus dirty integration; scope=remaining harness reconciliation; outcome=blocked; commit=none
+- Resume refused due child context threshold (183304 latest input tokens). Transfer sole writer to a fresh bounded harness/validation fork. No prior fork is running.
+- Ownership: owner=fork; fork_run=none; revision=885bfec6d plus dirty integration; scope=finish obsolete queue harness/DSN assumptions and run focused Castor proof, no new features; outcome=assigned; commit=none
+
+## Task workflow update - 2026-10-15T22:02:23+00:00
+- Recorded fork run: agent_62f58e21da12adf3
+- Ownership: owner=fork; fork_run=agent_62f58e21da12adf3; revision=885bfec6d plus dirty integration; scope=test harness cutover and focused regression proof; outcome=completed; commit=none
+- Current focused Castor results: 31 tests/174 assertions pass for broker paths/lifecycle/client, consumer argv, DSNs, application transaction middleware, startup migrations, isolation helpers. castor test:controller-replay passes 15 tests/871 assertions. Timing-window lease test removed; real Client send/renew/no-second-claim/ACK remains in supervisor test. Package owns engine expiry semantics.
+- Main ran castor phpstan on current tree; two findings remain in SessionSqliteQueueBrokerSupervisor: unused nullable return at line 445 and forbidden short ternary at line 496. Deptrac did not run because the chained PHPStan command failed.
+- Ownership: owner=fork; fork_run=agent_62f58e21da12adf3; revision=885bfec6d plus dirty integration; scope=final source-integration consistency, remove unused Doctrine Messenger dependency, extension guards/docs and Castor static checks; outcome=assigned; commit=none
+
+## Task workflow update - 2026-10-15T22:13:08+00:00
+- Ownership: owner=fork; fork_run=agent_62f58e21da12adf3; revision=c4e01af11b61c37e604b903e13eefdf7de1d936b; scope=final source integration consistency/dependencies/guards/docs; outcome=completed; commit=c4e01af11b61c37e604b903e13eefdf7de1d936b
+- Source integration committed. Current Castor focused suite passes 36 tests/183 assertions; controller-replay passes 15 tests/871 assertions; phpstan has 0 errors, deptrac 0 violations/errors, docs validation and formatting pass. Main additionally ran castor test --filter=PharSmokeTest at c4e01af11: build/boot smoke and 8 tests/9003 assertions pass. This validates PHAR boot, not yet a PHAR broker/driver journey.
+- Remaining acceptance: native/fused broker driver execution unresolved (Amp uses PHP_BINARY to run arbitrary worker PHP); native renewal-failure fail-stop not implemented because Symfony catches and logs renewal failures, handlers can continue. No stability/performance/exactly-once claim, no full castor check or independent review in task-start.
+- Skill defect noted without changing skill: .agents/skills/testing/references/e2e.md instructs 'Pair app and Messenger transport databases through TuiE2eDatabaseEnv or the existing controller base.' The Messenger Doctrine database is removed by this requested integration; tests instead isolate broker storage per session. Follow the current product requirement and retain unaffected isolation rules.
+- Ownership: owner=main; fork_run=none; revision=c4e01af11; scope=one-file stale invariant-comment correction in JsonlProcessAgentSessionClient and focused validation; outcome=assigned; commit=none
+
+## Task workflow update - 2026-10-15T22:14:26+00:00
+- Validation: castor test --filter='SessionSqliteQueue|ConsumerSupervisorTest|JsonlProcessAgentSessionClientTransportDsnTest|SqliteImmediateTransactionMiddlewareTest|StartupDatabaseMigratorTest|TuiE2eDatabaseEnvTest|ParaTestWorkerIsolationTest|ExtensionAgentJobRegistryTest': 36 tests, 183 assertions pass; castor test:controller-replay: 15 tests, 871 assertions pass; castor phpstan: errors=0,file_errors=0; castor deptrac: violations=0,errors=0; castor docs:validate and affected-path formatting pass; castor test --filter=PharSmokeTest: 8 tests, 9003 assertions pass; packaged command boot only, not a broker/driver journey; Final comment-only revision: castor cs-check --path=src/CodingAgent/Runtime/Process/JsonlProcessAgentSessionClient.php and castor test --filter=JsonlProcessAgentSessionClientTransportDsnTest pass (3 tests/35 assertions); git diff --check clean; worktree clean
+- Summary: Source broker integration committed on task branch; focused correctness, controller replay, static analysis, architecture and PHAR boot checks pass. Task stays IN-PROGRESS for packaged broker/native child-process compatibility and remaining recovery acceptance; no PR/full gate yet.
+- Ownership: owner=main; fork_run=none; revision=1193f4cb0; scope=one-file invariant-comment correction and focused validation; outcome=completed; commit=1193f4cb0
+- Implementation commits: c4e01af11b61c37e604b903e13eefdf7de1d936b and 1193f4cb0. No merge/push/PR/full castor check or independent review performed in task-start.
+- Outstanding compatibility evidence: source Linux broker lifecycle is tested. PHAR build/boot is tested, but packaged broker/driver startup still needs a dedicated journey. Fused-native Amp driver process spawning is unresolved: ProcessContext::locateBinary returns PHP_BINARY under CLI; Hatfield native locators explicitly handle fused runtimes where PHP_BINARY is empty or self-executable. Do not assert that the native broker works or introduce an external-PHP fallback without approval.
+- Outstanding recovery boundary: broker exit stops session; native renewal failure only warns in installed Symfony Worker and does not abort a running handler. User-approved 60s/5s policy is a trial of at-least-once delivery, not an exactly-once guarantee. Stability, native failure policy, live long-handler heartbeat behavior and Hatfield performance/resource measurements remain unproved.
+
+## Task workflow update - 2026-10-15T23:33:53+00:00
+- Summary: User confirmed proceeding with the 60s reservation/5s keepalive trial despite the explained at-least-once risk. Evaluate this broker in practice rather than treating duplicate-proof execution as a prerequisite.
+- User clarification: current transport effectively has no automatic redelivery, only /repair; prior short-lease behavior failed because of SQLite contention and the PHP/Symfony heartbeat issue. User wants to see how the new broker behaves.
+- Keep the approved 60s/5s configuration for testing. Do not claim duplicate execution is impossible, but do not add speculative fencing or treat exactly-once guarantees as a requirement for this trial. Preserve /repair.
+- Agreed evaluation direction from preceding discussion: build a fresh candidate artifact from the integration branch, not the older installed executable; reuse a small Harbor SWE-bench case from the prior selected ten and existing tool-timing instrumentation. Normal-workflow evidence and controlled heartbeat-failure evidence answer different questions. No new Harbor run has been executed yet.
+
+## Task workflow update - 2026-10-15T23:36:10+00:00
+- Summary: User authorized a bounded old-versus-new Harbor trial using one small case from the prior selected ten, fresh branch-built artifacts, existing tool-timing measurements, and checks for errors/duplicates/owned-process cleanup.
+- Evaluation budget: one baseline attempt and one candidate attempt on the same pinned SWE-bench case and matching settings. No retries until success. Validate fresh candidate executable/broker startup before spending model budget. Do not use/replace the user's installed executable.
+- User explicitly requested Harbor SWE-bench execution. This overrides the testing live-llm reference's production-provider prohibition for this bounded benchmark only; it does not change ordinary E2E provider rules. Follow Harbor access-only private credential-copy procedure, never upload live auth/refresh tokens.
+- Ownership: owner=fork; fork_run=agent_62f58e21da12adf3; revision=1193f4cb0; scope=bounded fresh native artifact compatibility and old/new Harbor timing evaluation, ignored diagnostic artifacts only, no production changes; outcome=assigned; commit=none
