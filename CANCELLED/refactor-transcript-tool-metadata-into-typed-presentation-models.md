@@ -10,7 +10,7 @@ Follow-up from PR #387 review. Investigate replacing manual array shape checks i
 - Focused virtual transcript tests and castor deptrac pass.
 
 ## Workflow metadata
-Status: TODO
+Status: CANCELLED
 Branch:
 Worktree:
 Fork run:
@@ -21,3 +21,8 @@ Completed:
 
 ## Work log
 - Created: 2026-08-17T02:01:49.727Z
+
+## Task workflow update - 2026-10-15T18:47:23+00:00
+- Moved TODO → CANCELLED.
+- No Worktree metadata; cancelled without git worktree cleanup.
+- Summary: Cancelled at the user’s request; user does not plan to pursue this work. Not implemented as part of this cancellation.

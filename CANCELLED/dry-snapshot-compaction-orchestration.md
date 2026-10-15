@@ -12,7 +12,7 @@ Follow-up approved during FORK-MVP-03 review. `CompactionService::compactMessage
 - Focused Castor compaction tests, deptrac, phpstan, cs-check, and full castor check pass before CODE-REVIEW.
 
 ## Workflow metadata
-Status: TODO
+Status: CANCELLED
 Branch:
 Worktree:
 Fork run:
@@ -23,3 +23,8 @@ Completed:
 
 ## Work log
 - Created: 2026-07-18T18:33:07.944Z
+
+## Task workflow update - 2026-10-15T18:47:22+00:00
+- Moved TODO → CANCELLED.
+- No Worktree metadata; cancelled without git worktree cleanup.
+- Summary: Cancelled at the user’s request; user does not plan to pursue this work. Not implemented as part of this cancellation.

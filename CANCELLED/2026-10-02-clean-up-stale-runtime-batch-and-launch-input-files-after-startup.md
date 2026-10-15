@@ -18,7 +18,7 @@ Keep this separate from PR #545. Investigation should determine how the output-c
 - Deterministic tests prove eligible cleanup, retention of active or uncertain work, repeated cleanup, and coordination with concurrent ownership. Validate through Castor.
 
 ## Workflow metadata
-Status: TODO
+Status: CANCELLED
 Branch:
 Worktree:
 Fork run:
@@ -29,3 +29,8 @@ Completed:
 
 ## Work log
 - Created: 2026-10-02T18:23:02+00:00
+
+## Task workflow update - 2026-10-15T17:59:54+00:00
+- Moved TODO → CANCELLED.
+- No Worktree metadata; cancelled without git worktree cleanup.
+- Summary: Cancelled at the user's request after read-only task review. Filesystem batch storage has been replaced by SQL with guarded deletion, and normal launch-input cleanup already runs after committed results, terminal runs and registered child handoff. A metadata-only check found no tool-batch or launch-input files under the integration checkout's sessions tree. A crash/deletion-failure retry gap remains, but the user chose not to implement additional startup cleanup. No implementation, branch, worktree or code changes were created.

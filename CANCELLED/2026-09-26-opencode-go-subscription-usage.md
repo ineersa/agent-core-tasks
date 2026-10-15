@@ -9,7 +9,7 @@ Deferred by user during 2026-09-26 OpenCode Go provider work. OpenCode Go model 
 - Never log or render browser cookies or API keys; validate at the lowest correct layer with Castor.
 
 ## Workflow metadata
-Status: TODO
+Status: CANCELLED
 Branch:
 Worktree:
 Fork run:
@@ -20,3 +20,8 @@ Completed:
 
 ## Work log
 - Created: 2026-09-26T15:00:13+00:00
+
+## Task workflow update - 2026-10-15T18:38:18+00:00
+- Moved TODO → CANCELLED.
+- No Worktree metadata; cancelled without git worktree cleanup.
+- Summary: Cancelled at the user's request. Not implemented.

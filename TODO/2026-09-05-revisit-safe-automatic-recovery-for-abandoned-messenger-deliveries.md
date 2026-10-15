@@ -31,3 +31,8 @@ Completed:
 
 ## Task workflow update - 2026-09-11T15:49:06+00:00
 - 2026-09-11 follow-up: telemetry + in-app reproduction work split out to TODO/2026-09-11-messenger-keepalive-telemetry-in-app-repro (keepalive-boundary telemetry, diagnostic --keepalive mode + strace recipe, deterministic timer-lifecycle and SQLite BEGIN IMMEDIATE contention tests, root-cause report). Advisory review accepted: the Console rearm defect is real but rearming in finally is a partial fix; the production trigger remains unproven — Datadog shows pid 25 logged only INFO that day (zero warnings/errors), no observer/stream/llm.request.failed records, and no SQLSTATE/locked/busy/TransportException records at all, so the swallowed exception left no trace. Do not restore automatic reclaim until telemetry and a heartbeat-failure policy exist.
+
+## Task workflow update - 2026-10-15T20:42:45+00:00
+- Summary: Revived investigation alongside IN-PROGRESS broker integration at user request. sqlite-queue now supports signal-safe native Messenger keepalive, but package documentation still requires application policy for renewal failure and duplicate external effects.
+- Implement coupled transport/supervision work in the broker integration task's single worktree. Do not create a parallel writer/worktree for the same changes. This task remains open until explicit recovery policy and deterministic failure proof are satisfied.
+- The user's request reopens evaluation of keepalive and adequate redelivery timeouts; it does not establish exactly-once execution or silently settle the prior requirement for approval of automatic reclaim. Inspect and obtain approval for remaining policy choices before enabling short leases.

@@ -62,13 +62,13 @@ Main owns contract decisions and the coupled minimal broker/storage/adapter work
 - No Symfony 8.2 migration, amphp/parallel pool, custom journal, full in-memory queue mirror, automatic lease recovery, general queue-admin API, speculative backend abstraction, or permanent benchmark fallback is introduced. Candidate async SQLite adoption requires a measured need and separate compatibility decision.
 
 ## Workflow metadata
-Status: TODO
-Branch:
-Worktree:
-Fork run:
+Status: IN-PROGRESS
+Branch: task/2026-09-27-implement-session-owned-sqlite-messenger-broker
+Worktree: /home/ineersa/projects/agent-core-worktrees/2026-09-27-implement-session-owned-sqlite-messenger-broker
+Fork run: agent_5214862b6fbc9487
 PR URL:
 PR Status:
-Started:
+Started: 2026-10-15T20:42:26+00:00
 Completed:
 
 ## Work log
@@ -103,3 +103,40 @@ Completed:
 - The controller owns broker readiness, failure reporting, and shutdown. The broker owns its async SQLite persistence child, and teardown must account for the full owned tree. Preserve queued state across ordinary shutdown/resume and prevent overlapping owners of the same session database.
 - Do not implement a detached project-wide broker, shared-project attach/detach lifecycle, or last-session shutdown coordination for MVP. Per-session ownership reduces lifecycle complexity and separates database contention and broker failures between sessions; it is not an OS security sandbox.
 - The standalone reusable package, Revolt/async SQLite direction, mandatory delayed delivery, portable Messenger adapter, and package-owned benchmark remain unchanged. No implementation start or status transition is implied by 'start with per session for now'.
+
+## Task workflow update - 2026-10-15T20:42:10+00:00
+- Summary: Revived at the user's request for integration of the implemented /home/ineersa/projects/sqlite-queue package into Hatfield Messenger. Read current README and broker/transport contracts and inspected Hatfield controller, consumer supervision, DSN creation and Doctrine middleware.
+- Current requested scope: consume the external broker package, preserve controller-root session ownership, replace direct Doctrine queue access and polling workarounds, integrate broker readiness/failure/shutdown, and evaluate native keepalive with realistic redelivery timeouts together with the abandoned-delivery recovery task. Package implementation is not part of this Hatfield task.
+- Scope constraints: keep app-state SQLite concurrency protection unless evidence shows it is obsolete. The existing BEGIN IMMEDIATE middleware also protects state.sqlite; moving queue writes does not remove those app-state writers.
+- Current evidence: package supports signal-safe native keepalive, separate notification/operations connections and native Messenger notification waits. Its docs explicitly say heartbeat failure does not stop the running handler, expired leases permit redelivery, and unconfirmed mutations must not be replayed automatically. Short leases require an approved loss-of-ownership policy, not only enabling --keepalive.
+- Current benchmark evidence does not establish improved backlog throughput or lower total resource use. Broker integration must retain matching durability and measure real Hatfield workloads; no performance win is claimed. Resolve legacy queue cutover and broker-failure policy before implementing dependent behavior.
+
+## Task workflow update - 2026-10-15T20:42:26+00:00
+- Moved TODO → IN-PROGRESS.
+- Created branch task/2026-09-27-implement-session-owned-sqlite-messenger-broker.
+- Created worktree /home/ineersa/projects/agent-core-worktrees/2026-09-27-implement-session-owned-sqlite-messenger-broker.
+- Copied vendor directory into /home/ineersa/projects/agent-core-worktrees/2026-09-27-implement-session-owned-sqlite-messenger-broker.
+- Installed extensions vendor into /home/ineersa/projects/agent-core-worktrees/2026-09-27-implement-session-owned-sqlite-messenger-broker.
+- Updated parent IDEA worktree exclusions for /home/ineersa/projects/agent-core-worktrees/2026-09-27-implement-session-owned-sqlite-messenger-broker.
+- Created worktree .idea module at /home/ineersa/projects/agent-core-worktrees/2026-09-27-implement-session-owned-sqlite-messenger-broker/.idea.
+- Summary: Begin external broker integration. Initial routing pass complete; finalize cutover and lost-ownership policies before implementation delegation.
+
+## Task workflow update - 2026-10-15T20:46:56+00:00
+- Summary: User finalized recovery and cutover policies: trial 60-second reservations with 5-second native keepalive, test actual redelivery causes; no legacy queue migration. Implement package integration in the task worktree.
+- Authoritative clarification: user approved 60 sec + 5 sec keepalive for testing and will decide whether to keep it based on stability. Diagnose causes of redelivery; do not promise exactly-once external execution. No data migration is needed. Leave existing project-wide queue data untouched; no compatibility transport or hidden replay.
+- Implement the previously proposed fail-visible session behavior on detected broker/ownership loss, not transparent broker reconnect/replay. Persist the broker queue across normal session shutdown/resume. Retain manual /repair and state.sqlite concurrency protection.
+- Ownership: owner=fork; fork_run=none; revision=885bfec6d; scope=external sqlite-queue dependency, controller-owned broker lifecycle and Messenger cutover with 60s reservations/5s keepalive, removal of obsolete direct queue infrastructure, focused regression proof and affected docs/packaging; outcome=assigned; commit=none
+
+## Task workflow update - 2026-10-15T21:12:41+00:00
+- Recorded fork run: agent_5214862b6fbc9487
+- Ownership: owner=fork; fork_run=agent_5214862b6fbc9487; revision=885bfec6d; scope=external broker integration and affected regression harnesses; outcome=blocked; commit=none
+- First implementation handoff is partial, uncommitted and unvalidated. Production wiring and dependency cutover exist, but process/E2E harness repairs and known syntax failures remain. Raw php -l used by the fork is not accepted as project validation; all subsequent QA must use Castor. No completion or stability claim is made.
+
+## Task workflow update - 2026-10-15T21:13:41+00:00
+- Ownership: owner=fork; fork_run=agent_5214862b6fbc9487; revision=885bfec6d plus existing uncommitted integration; scope=finish existing broker integration in /home/ineersa/projects/agent-core-worktrees/2026-09-27-implement-session-owned-sqlite-messenger-broker, repair harnesses and establish focused Castor proof; outcome=assigned; commit=none
+- Explicit continuation handoff: same fork retains sole writer ownership. Inspect current status/diff before resuming. Main inspected new lifecycle/path classes and flagged private socket directory, intentional exception logging, graceful broker-before-driver shutdown, full partial-start cleanup, native packaging compatibility and ownership-loss handling for correction/verification.
+
+## Task workflow update - 2026-10-15T21:14:26+00:00
+- Ownership: owner=fork; fork_run=agent_5214862b6fbc9487; revision=885bfec6d plus uncommitted integration; scope=initial external broker wiring; outcome=blocked; commit=none
+- agent_resume refused the existing child because its context exceeded the resume threshold (187934 input tokens). Transfer sole-writer ownership to a fresh fork rather than duplicating an active child.
+- Ownership: owner=fork; fork_run=none; revision=885bfec6d plus uncommitted integration; scope=finish core broker lifecycle/path safety and focused runnable transport/controller proof in existing task worktree; outcome=assigned; commit=none
